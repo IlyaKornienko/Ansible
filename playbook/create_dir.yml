@@ -1,0 +1,10 @@
+---
+  - name: Create directory1
+    file:
+      path: /home/test/folder1
+      state: directory
+
+  - name: Create directory2
+    file:
+      path: /home/test/folder2
+      state: directory

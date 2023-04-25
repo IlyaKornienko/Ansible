@@ -1,0 +1,8 @@
+---
+- name: Check distribution in servers
+  hosts: all
+  become: yes
+
+  tasks:
+    debug:
+    var: ansible_distribution

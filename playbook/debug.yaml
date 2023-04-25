@@ -1,0 +1,26 @@
+---
+- name: My playbook fot variables
+  hosts: test
+  become: yes
+
+  tasks:
+#  - debug:
+#      msg: "Sekretnoe slovo {{ secret }}"
+#
+#  - debug:
+#      msg: "Vladelec Etogo Servera -->{{ owner }}<--"
+#
+#  - set_fact: full_message="{{ message_1 }} {{ message_2 }} from {{ owner }}"
+#
+#  - debug:
+#      var: full_message
+
+#  - debug:
+#      var: ansible_distribution
+
+  - shell: uptime
+    register: results
+  - debug:
+      var: results.cmd
+  - debug:
+      var: results.stdout

@@ -1,0 +1,65 @@
+---
+- name: Install Apache web server
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: OS family
+    debug: var=ansible_os_family
+
+  - block: # ======== Block for RedHat ========
+      - name: YUM install httpd
+        yum:
+          name: httpd
+          state: latest
+
+      - name: Copy html page
+        copy: src={{ source_file }} dest={{ destin_file }} mode=0644
+        notify: Restart Apache
+
+      - name: Start web server for RedHat
+        service:
+          name: httpd
+          state: started
+          enabled: yes
+
+      - name: Restart httpd for RedHat
+        service:
+          name: httpd
+          state: restart
+
+    when: ansible_os_family == "RedHat"
+
+  - block: # ======== Block for Debian ========
+      - name: APT install apache2
+        apt:
+          name: apache2
+          state: latest
+
+      - name: Copy html page
+        copy: src={{ source_file }} dest={{ destin_file }} mode=0644
+        notify: Restart Apache
+
+      - name: Start web server for Debian
+        service:
+          name: apache2
+          state: started
+          enabled: yes
+
+      - name: Restart httpd for RedHat
+        service:
+          name: httpd
+          state: restart
+
+    when: ansible_os_family == "Debian"
+
+  handlers:
+  - name: Restart apache2 for Debian
+    service:
+      name: apache2
+      state: restart
+
+  - name: Restart httpd for RedHat
+    service:
+      name: httpd
+      state: restart

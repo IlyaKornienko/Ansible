@@ -1,0 +1,54 @@
+---
+- name: Install Apache and upload in servers
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: ./index.html
+    destin_file: /var/www/html
+
+  tasks:
+  - name: Check OS family
+    debug:
+      var: ansible_os_family
+
+  - name: APT install apache2
+    apt:
+      name: apache2
+      state: latest
+    when: ansible_os_family == "Debian"
+
+  - name: YUM install httpd
+    yum:
+      name: httpd
+      state: latest
+    when: ansible_os_family == "RedHat"
+
+  - name: Copy html page
+    copy: src={{ source_file }} dest={{ destin_file }} mode=0644
+#    notify: Restart Apache
+
+  - name: Start web server for Debian
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+    when: ansible_os_family == "Debian"
+
+  - name: Start web server for RedHat
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_os_family == "RedHat"
+
+  handlers:
+  - name: Restart apache2 for Debian
+    service:
+      name: apache2
+      state: restart
+
+  - name: Restart httpd for RedHat
+    service:
+      name: httpd
+      state: restart

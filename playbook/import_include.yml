@@ -1,0 +1,14 @@
+---
+- name: Playbook
+  hosts: all
+  become: yes
+
+  vars:
+    mytext: "Hello kig-it"
+
+  tasks:
+  - name: Ping conection
+    ping:
+
+  - name: Create directory
+    include: create_dir.yml

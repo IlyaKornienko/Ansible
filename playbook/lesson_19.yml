@@ -1,0 +1,7 @@
+---
+- name: Ansible Lesson 19
+  hosts: all
+  become: yes
+
+  tasks:
+  - name:

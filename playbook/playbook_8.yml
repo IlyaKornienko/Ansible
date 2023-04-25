@@ -1,0 +1,35 @@
+---
+- name: Playbook 8
+  hosts: all
+  become: yes
+
+  vars:
+    mytext: "Hello kig-it"
+
+  tasks:
+  - name: Ping test
+    ping:
+
+  - name: Create directory1
+    file:
+      path: /home/test/folder1
+      state: directory
+
+  - name: Create directory2
+    file:
+      path: /home/test/folder2
+      state: directory
+
+  - name: Create file_1
+    copy:
+      dest: "/home/test/folder1/test1"
+      content: |
+        This is file_1 in folder1
+        {{ mytext }}
+
+  - name: Create file_2
+    copy:
+      dest: "/home/test/folder2/test2"
+      content: |
+        This is file_2 in folder2
+        {{ mytext }}
